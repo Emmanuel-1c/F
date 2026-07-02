@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Feliz Cumpleaños, May</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+  /* ============================================
+     TOKENS
+     ============================================ */
+  :root{
+    --cream: #FDFBF7;
+    --cream-deep: #F5F0E6;
+    --ink: #2C2825;
+    --ink-soft: #55504A;
+    --gold: #A9822F;
+    --gold-soft: #C9A24B;
+    --terracotta: #BE7A5A;
+    --line: rgba(44, 40, 37, 0.14);
+    --paper-shadow: rgba(44, 40, 37, 0.08);
+    --gold-glow: rgba(169, 130, 47, 0.35);
+    --terracotta-glow: rgba(190, 122, 90, 0.28);
+
+    --serif: 'Cormorant Garamond', serif;
+    --sans: 'Inter', sans-serif;
+
+    --ease-page: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-soft: cubic-bezier(0.16, 0.8, 0.28, 1);
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+  html{
+    scroll-behavior:smooth;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  body{
+    background:
+      radial-gradient(ellipse 60% 45% at 12% 0%, rgba(201, 162, 75, 0.10), transparent 60%),
+      radial-gradient(ellipse 55% 40% at 100% 30%, rgba(190, 122, 90, 0.08), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 50% 100%, rgba(201, 162, 75, 0.07), transparent 65%),
+      var(--cream);
+    color: var(--ink);
+    font-family: var(--sans);
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+  }
+
+  /* ============================================
+     AMBIENT GLOW LAYER
+     ============================================ */
+  .ambient{
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .ambient__orb{
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0.5;
+    will-change: transform;
+  }
+
+  .ambient__orb--1{
+    width: min(48vw, 460px);
+    height: min(48vw, 460px);
+    top: -10%;
+    left: -8%;
+    background: radial-gradient(circle, var(--gold-glow), transparent 70%);
+    animation: drift-a 26s var(--ease-soft) infinite alternate;
+  }
+
+  .ambient__orb--2{
+    width: min(40vw, 380px);
+    height: min(40vw, 380px);
+    top: 30%;
+    right: -10%;
+    background: radial-gradient(circle, var(--terracotta-glow), transparent 70%);
+    animation: drift-b 32s var(--ease-soft) infinite alternate;
+  }
+
+  .ambient__orb--3{
+    width: min(36vw, 340px);
+    height: min(36vw, 340px);
+    bottom: -8%;
+    left: 22%;
+    background: radial-gradient(circle, var(--gold-glow), transparent 70%);
+    animation: drift-c 22s var(--ease-soft) infinite alternate;
+  }
+
+  @keyframes drift-a{
+    0%{ transform: translate(0, 0) scale(1); }
+    100%{ transform: translate(6vw, 8vh) scale(1.12); }
+  }
+  @keyframes drift-b{
+    0%{ transform: translate(0, 0) scale(1); }
+    100%{ transform: translate(-7vw, -6vh) scale(1.08); }
+  }
+  @keyframes drift-c{
+    0%{ transform: translate(0, 0) scale(1); }
+    100%{ transform: translate(5vw, -7vh) scale(1.15); }
+  }
+
+  /* ============================================
+     SPARKLES
+     ============================================ */
+  .sparkle{
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--gold-soft);
+    box-shadow: 0 0 6px 1px var(--gold-glow);
+    opacity: 0;
+    animation: sparkle-rise linear infinite;
+  }
+
+  @keyframes sparkle-rise{
+    0%{ transform: translateY(0) scale(0.6); opacity: 0; }
+    12%{ opacity: 0.9; }
+    85%{ opacity: 0.4; }
+    100%{ transform: translateY(-90vh) scale(1); opacity: 0; }
+  }
+
+  /* subtle paper grain, applied once, fixed over everything */
+  body::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    pointer-events: none;
+    opacity: 0.045;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  ::selection{ background: var(--gold-soft); color: var(--cream); }
+
+  a{ color: inherit; text-decoration: none; }
+
+  /* reveal-on-scroll utility */
+  .reveal{
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 1.1s var(--ease-page), transform 1.1s var(--ease-page);
+  }
+  .reveal.is-visible{ opacity: 1; transform: translateY(0); }
+  .reveal.d1{ transition-delay: .08s; }
+  .reveal.d2{ transition-delay: .18s; }
+  .reveal.d3{ transition-delay: .28s; }
+  .reveal.d4{ transition-delay: .38s; }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .reveal{ opacity:1; transform:none; transition:none; }
+    *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero{
+    position: relative;
+    z-index: 1;
+    min-height: 100svh;
+    display: flex;
+    align-items: flex-end;
+    padding: 8vh 7vw calc(10vh + env(safe-area-inset-bottom, 0px));
+    padding-top: calc(8vh + env(safe-area-inset-top, 0px));
+    overflow: hidden;
+  }
+
+  .hero__monogram{
+    position: absolute;
+    top: -14vw;
+    right: -4vw;
+    font-family: var(--serif);
+    font-weight: 500;
+    font-style: italic;
+    font-size: min(62vw, 780px);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--line);
+    user-select: none;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero__content{
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+  }
+
+  .hero__eyebrow{
+    display: block;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 1.6rem;
+  }
+
+  .hero__title{
+    font-family: var(--serif);
+    line-height: 0.98;
+    color: var(--ink);
+  }
+
+  .hero__title span{ display:block; }
+
+  .hero__title .line1{
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(2.4rem, 6.4vw, 4.4rem);
+    color: var(--ink-soft);
+    margin-left: 0.4rem;
+  }
+
+  .hero__title .line2{
+    font-weight: 600;
+    font-size: clamp(3.6rem, 11vw, 8.2rem);
+    letter-spacing: -0.01em;
+    margin-top: -0.05em;
+    text-shadow: 0 0 0 transparent;
+    animation: title-glow 6s ease-in-out infinite;
+    animation-delay: 1.4s;
+  }
+
+  @keyframes title-glow{
+    0%, 100%{ text-shadow: 0 0 0 transparent; }
+    50%{ text-shadow: 0 0 26px rgba(201, 162, 75, 0.28); }
+  }
+
+  .hero__sub{
+    margin-top: 2.4rem;
+    margin-left: 0.5rem;
+    max-width: 30ch;
+    font-family: var(--sans);
+    font-size: 0.86rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-left: 1px solid var(--line);
+    padding-left: 1.1rem;
+  }
+
+  .hero__scroll{
+    position: absolute;
+    bottom: 6vh;
+    right: 7vw;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .hero__scroll .stem{
+    width: 1px;
+    height: 42px;
+    background: linear-gradient(var(--ink-soft), transparent);
+    animation: stem-flow 2.4s var(--ease-soft) infinite;
+    transform-origin: top;
+  }
+
+  @keyframes stem-flow{
+    0%{ transform: scaleY(0.3); opacity: 0.3; }
+    50%{ transform: scaleY(1); opacity: 1; }
+    100%{ transform: scaleY(0.3); opacity: 0.3; }
+  }
+
+  /* ============================================
+     SHARED SECTION FRAME
+     ============================================ */
+  .section{
+    position: relative;
+    z-index: 1;
+    padding: 12vh 7vw;
+  }
+
+  .section__label{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 5rem;
+  }
+
+  .section__label .num{
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--terracotta);
+  }
+
+  .section__label .rule{
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+    max-width: 120px;
+  }
+
+  .section__label .txt{
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     LETTER SECTION
+     ============================================ */
+  .letter{
+    background: var(--cream-deep);
+  }
+
+  .letter__wrap{
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 7fr);
+    gap: 4vw;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  .letter__aside{
+    padding-top: 0.4rem;
+  }
+
+  .letter__title{
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+    line-height: 1.15;
+    color: var(--ink);
+    position: sticky;
+    top: 10vh;
+  }
+
+  .letter__body p{
+    font-family: var(--serif);
+    font-size: clamp(1.12rem, 1.7vw, 1.36rem);
+    line-height: 1.72;
+    color: var(--ink);
+    margin-bottom: 1.7rem;
+    text-wrap: pretty;
+  }
+
+  .letter__body p:first-of-type::first-letter{
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 4.6rem;
+    line-height: 0.72;
+    float: left;
+    padding-right: 0.6rem;
+    padding-top: 0.3rem;
+    color: var(--terracotta);
+  }
+
+  .letter__name{
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+    color: var(--gold);
+    margin: 2.2rem 0 1.2rem;
+  }
+
+  .letter__signoff{
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .letter__signoff .from{
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+
+  .letter__signoff .name{
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 600;
+    font-size: 1.7rem;
+    color: var(--ink);
+  }
+
+  @media (max-width: 780px){
+    .letter__wrap{ grid-template-columns: 1fr; gap: 2.4rem; }
+    .letter__title{ position: static; }
+  }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .foot{
+    position: relative;
+    z-index: 1;
+    padding: 8vh 7vw calc(6vh + env(safe-area-inset-bottom, 0px));
+    text-align: center;
+  }
+
+  .foot__line{
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+  }
+
+  .foot__mark{
+    margin-top: 1.4rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--line);
+  }
+
+  /* ============================================
+     RESPONSIVE — TABLETS
+     ============================================ */
+  @media (min-width: 601px) and (max-width: 1024px){
+    .hero{ padding-left: 6vw; padding-right: 6vw; }
+    .letter__wrap{ gap: 3vw; }
+    .section{ padding-left: 6vw; padding-right: 6vw; }
+    .ambient__orb{ filter: blur(60px); }
+  }
+
+  /* ============================================
+     RESPONSIVE — PHONES
+     ============================================ */
+  @media (max-width: 600px){
+    .hero{
+      padding-left: 6vw;
+      padding-right: 6vw;
+      align-items: center;
+    }
+    .hero__monogram{
+      top: -6vw;
+      right: -10vw;
+      font-size: min(90vw, 480px);
+      opacity: 0.6;
+    }
+    .hero__scroll{ right: 6vw; bottom: 4vh; }
+    .section{ padding: 9vh 6vw; }
+    .section__label{ margin-bottom: 3.4rem; }
+    .letter__body p:first-of-type::first-letter{ font-size: 3.6rem; }
+
+    .ambient__orb{ filter: blur(48px); opacity: 0.4; }
+    .ambient__orb--1{ width: 70vw; height: 70vw; }
+    .ambient__orb--2{ width: 60vw; height: 60vw; }
+    .ambient__orb--3{ width: 55vw; height: 55vw; }
+    .sparkle:nth-child(n+7){ display: none; }
+  }
+
+  @media (max-width: 380px){
+    .hero__title .line1{ margin-left: 0.15rem; }
+    .hero__sub{ padding-left: 0.9rem; }
+  }
+
+  /* short / landscape viewports (phones rotated) */
+  @media (max-height: 480px) and (orientation: landscape){
+    .hero{
+      min-height: auto;
+      padding-top: calc(6vh + env(safe-area-inset-top, 0px));
+      padding-bottom: calc(6vh + env(safe-area-inset-bottom, 0px));
+    }
+    .hero__scroll{ display: none; }
+  }
+
+  /* respect user motion preference for the new effects too */
+  @media (prefers-reduced-motion: reduce){
+    .ambient__orb, .sparkle, .hero__title .line2{
+      animation: none !important;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+  <!-- ambient light + sparkles -->
+  <div class="ambient" aria-hidden="true">
+    <div class="ambient__orb ambient__orb--1"></div>
+    <div class="ambient__orb ambient__orb--2"></div>
+    <div class="ambient__orb ambient__orb--3"></div>
+    <span class="sparkle" style="left:8%; animation-duration:9s; animation-delay:0s;"></span>
+    <span class="sparkle" style="left:18%; animation-duration:12s; animation-delay:2.5s;"></span>
+    <span class="sparkle" style="left:32%; animation-duration:10.5s; animation-delay:1s;"></span>
+    <span class="sparkle" style="left:47%; animation-duration:13s; animation-delay:4s;"></span>
+    <span class="sparkle" style="left:61%; animation-duration:9.5s; animation-delay:1.8s;"></span>
+    <span class="sparkle" style="left:74%; animation-duration:11s; animation-delay:3.2s;"></span>
+    <span class="sparkle" style="left:85%; animation-duration:14s; animation-delay:0.6s;"></span>
+    <span class="sparkle" style="left:93%; animation-duration:10s; animation-delay:2s;"></span>
+  </div>
+
+  <!-- ============================================
+       HERO
+       ============================================ -->
+  <section class="hero">
+    <div class="hero__monogram" aria-hidden="true">M</div>
+    <div class="hero__content">
+      <span class="hero__eyebrow reveal">Un pequeño espacio, solo para ti</span>
+      <h1 class="hero__title">
+        <span class="line1 reveal d1">Feliz</span>
+        <span class="line2 reveal d2">Cumpleaños,<br>May</span>
+      </h1>
+      <p class="hero__sub reveal d3">Un espacio para celebrar tu día</p>
+    </div>
+    <div class="hero__scroll reveal d4">
+      <span class="stem"></span>
+      <span>Desliza</span>
+    </div>
+  </section>
+
+  <!-- ============================================
+       LA CARTA
+       ============================================ -->
+  <section class="letter section" id="carta">
+    <div class="section__label reveal">
+      <span class="num">I.</span>
+      <span class="rule"></span>
+      <span class="txt">La carta</span>
+    </div>
+
+    <div class="letter__wrap">
+      <div class="letter__aside">
+        <h2 class="letter__title reveal">Para ti, <br>en este día.</h2>
+      </div>
+
+      <div class="letter__body">
+        <p class="reveal">Quise tomarme un momento para escribirte en este día, tal vez para ti no sea una fecha especialmente importante, pero al menos espero que la veas como un momento que merece ser recordado, han pasado tantos años desde que nos conocimos que, sinceramente, todavía me cuesta creer lo rápido que pasó el tiempo, parece que fue ayer cuando empezamos a hablar y, sin darme cuenta, ya hay una historia detrás de nosotros.</p>
+
+        <p class="letter__name reveal">May,</p>
+
+        <p class="reveal">Si algo me ha enseñado todo este tiempo es que las personas realmente valiosas son difíciles de encontrar. Y tú, sin buscarlo, terminaste convirtiéndote en una de ellas para mí, me gusta pensar que, entre todas las coincidencias que existen en la vida, una de las mejores fue haberte conocido, hemos compartido conversaciones, risas, momentos buenos, otros no tanto, y aun así aquí seguimos, creo que eso dice mucho.</p>
+
+        <p class="reveal">Hay cosas que quizá no digo con frecuencia, pero no por eso dejan de ser verdad. Aprecio mucho el cariño y amor que me has dado y me estas dando, la confianza que has puesto en mí y la forma en la que siempre has estado presente, son detalles que no pasan desapercibidos y que, aunque a veces no lo parezca, guardo con mucho cariño, espero que este nuevo año te traiga muchas experiencias, personas que sumen a tu vida y metas que poco a poco vayas convirtiendo en realidad.</p>
+
+        <p class="reveal">Deseo que sigas creciendo sin perder esa esencia tan tuya, esa forma de hacer sentir cómodos a quienes te rodean y de demostrar lo mucho que te importan las personas. Y, por encima de todo, espero que nunca dudes del valor que tienes, porque eres una persona increíble, mucho más de lo que a veces crees, gracias por todos estos años, por cada conversación y por cada recuerdo que hemos construido.</p>
+
+        <p class="reveal">Independientemente de lo que nos depare el futuro, siempre voy a guardar con mucho cariño todo lo que hemos compartido, Feliz cumpleaños, May. Ojalá este sea un año que te haga sonreír más de lo que esperas y que te deje recuerdos de esos que nunca se olvidan.</p>
+
+        <div class="letter__signoff reveal">
+          <span class="from">Con cariño,</span>
+          <span class="name">Emmanuel</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="foot">
+    <p class="foot__line reveal">Hecho con cariño, para ti.</p>
+    <p class="foot__mark reveal">May · Feliz cumpleaños</p>
+  </footer>
+
+<script>
+  // reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('is-visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // hero elements fade in immediately on load
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.hero .reveal').forEach((el, i) => {
+      setTimeout(() => el.classList.add('is-visible'), 120 + i * 90);
+    });
+  });
+</script>
+
+</body>
+</html>
